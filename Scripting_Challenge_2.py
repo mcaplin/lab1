@@ -10,39 +10,36 @@ output = open('RS_Out.txt', 'w')
     interaction in 4th column"""
 dic = {}
 
-"""Initialize list to hold values read from inp"""
+"""Initialize list to hold values read from inp to make it easy to
+    separate the columns from the input file."""
 lst = []
 
-"""n is a counter to get the first 2000 proteins. Initialize to 0. Increments
-    every time a new protein is added to lst.
-
-    While loop to put lines from file into lst.
-
-    readline() reads the lines one at a time. strip() removes newline characters.
+"""This loop adds the first 2000 proteins to dic.
+    i is a counter to put first 2000 proteins from file into lst. Initialize to 0.
+    Increments every time the while loop runs."""
+i = 0
+while len(dic) <= 2000: 
+    
+    """readline() reads the lines one at a time. strip() removes newline characters.
     split('\t') removes the tabs. Creates a 2D array since appending to lst one
     length 4 array at a time."""
-n = 0
-while n <= 2000:    
     lst.append(inp.readline().strip().split('\t'))
-    if lst[n] in lst:
-        n += 1
 
-"""Add keys (proteins in column 1) and 
-    values (proteins in column 2, probability in column 4) to dic"""
-for i in range(len(lst)):
     a0 = lst[i][0]
     a1 = lst[i][1]
     a3 = lst[i][3]
-    """If new key, add it to dic. If dic already has key, append matching protein"""
+    """If new key, add it to dic. If dic already has key, append matching protein
+        and its probability of interaction to key"""
     if dic.has_key(a0):
         dic[a0].append((a1,a3))
     else:
         dic[a0] = [(a1,a3)]
+    i += 1
         
 """Write a header to output file to make it easy to read"""
-output.write('protein \tbest match\tprobability\t\t# matches\n\n')
+output.write('protein      :  best match  :   probability     : # matches\n\n')
 
-"""This whole blurb of code is to print it nicely.
+"""This while loop is to print it nicely.
     Each loop is for a different protein."""
 while len(dic) > 0:
     """p2 will be the protein with the highest probability of interaction.
@@ -69,7 +66,7 @@ while len(dic) > 0:
     """Write the protein, best matching protein, probability of interaction with
         the best matching protein, and number of interactions into the
         output file."""
-    s = str(p1)  + "\t" + str(p2) + "\t" + str(prob) + '\t' + str(num) +'\n\n'
+    s = str(p1)  + " : " + str(p2) + " : " + str(prob) + ' : ' + str(num) +'\n\n'
     output.write(s)
     """Remove this entry from dic so while loop moves to next protein."""
     dic.pop(p1)
